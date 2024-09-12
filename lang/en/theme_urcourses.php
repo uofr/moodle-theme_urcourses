@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme Boost Union Child - Language pack
+ * Theme UR Courses - Language pack
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @copyright  2023 Daniel Poggenpohl <daniel.poggenpohl@fernuni-hagen.de> and Alexander Bias <bias@alexanderbias.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,17 +29,17 @@ defined('MOODLE_INTERNAL') || die();
 // phpcs:disable moodle.Files.LangFilesOrdering.IncorrectOrder
 
 // General.
-$string['pluginname'] = 'Boost Union Child';
-$string['choosereadme'] = 'This plugin is just a boilerplate template one can use to develop Boost Union child themes.';
-$string['configtitle'] = 'Boost Union Child';
-$string['settingsoverview_buc_desc'] = 'With Boost Union Child, you can customize Boost Union to your own local needs.';
+$string['pluginname'] = 'UR Courses';
+$string['choosereadme'] = 'UR Courses theme.';
+$string['configtitle'] = 'UR Courses';
+$string['settingsoverview_buc_desc'] = 'UR Courses theme settings.';
 
 // Settings: General settings tab.
 // ... Section: Inheritance.
 $string['inheritanceheading'] = 'Inheritance';
 $string['inheritanceinherit'] = 'Inherit';
 $string['inheritanceduplicate'] = 'Duplicate';
-$string['inheritanceoptionsexplanation'] = 'Most of the time, inheriting will be perfectly fine. However, it may happen that imperfect code is integrated into Boost Union which prevents simple SCSS inheritance for particular Boost Union features. If you encounter any issues with Boost Union features which seem not to work in Boost Union Child as well, try to switch this setting to \'Dupliate\' and, if this solves the problem, report an issue on Github (see the README.md file for details how to report an issue).';
+$string['inheritanceoptionsexplanation'] = 'Most of the time, inheriting will be perfectly fine. However, it may happen that imperfect code is integrated into Boost Union which prevents simple SCSS inheritance for particular Boost Union features. If you encounter any issues with Boost Union features which seem not to work in UR Courses as well, try to switch this setting to \'Dupliate\' and, if this solves the problem, report an issue on Github (see the README.md file for details how to report an issue).';
 // ... ... Setting: Pre SCSS inheritance setting.
 $string['prescssinheritancesetting'] = 'Pre SCSS inheritance';
 $string['prescssinheritancesetting_desc'] = 'With this setting, you control if the pre SCSS code from Boost Union should be inherited or duplicated.';
@@ -53,4 +53,4 @@ $string['extrascssinheritancesetting_desc'] = 'With this setting, you control if
  *************************************************************/
 
 // Privacy API.
-$string['privacy:metadata'] = 'The Boost Union Child theme does not store any personal data about any user.';
+$string['privacy:metadata'] = 'The UR Courses theme does not store any personal data about any user.';

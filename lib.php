@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme Boost Union Child - Library
+ * Theme UR Courses - Library
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @copyright  2023 Daniel Poggenpohl <daniel.poggenpohl@fernuni-hagen.de> and Alexander Bias <bias@alexanderbias.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // Constants which are use throughout this theme.
-define('THEME_BOOST_UNION_CHILD_SETTING_INHERITANCE_INHERIT', 0);
-define('THEME_BOOST_UNION_CHILD_SETTING_INHERITANCE_DUPLICATE', 1);
+define('THEME_URCOURSES_SETTING_INHERITANCE_INHERIT', 0);
+define('THEME_URCOURSES_SETTING_INHERITANCE_DUPLICATE', 1);
 
 /**
  * Returns the main SCSS content.
@@ -32,18 +32,18 @@ define('THEME_BOOST_UNION_CHILD_SETTING_INHERITANCE_DUPLICATE', 1);
  * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_boost_union_child_get_main_scss_content($theme) {
+function theme_urcourses_get_main_scss_content($theme) {
     global $CFG;
 
     // Require the necessary libraries.
     require_once($CFG->dirroot . '/theme/boost_union/lib.php');
 
     // As a start, get the compiled main SCSS from Boost Union.
-    // This way, Boost Union Child will ship the same SCSS code as Boost Union itself.
+    // This way, UR Courses will ship the same SCSS code as Boost Union itself.
     $scss = theme_boost_union_get_main_scss_content(theme_config::load('boost_union'));
 
-    // And add Boost Union Child's main SCSS file to the stack.
-    $scss .= file_get_contents($CFG->dirroot . '/theme/boost_union_child/scss/post.scss');
+    // And add UR Courses's main SCSS file to the stack.
+    $scss .= file_get_contents($CFG->dirroot . '/theme/urcourses/scss/post.scss');
 
     return $scss;
 }
@@ -54,7 +54,7 @@ function theme_boost_union_child_get_main_scss_content($theme) {
  * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_boost_union_child_get_pre_scss($theme) {
+function theme_urcourses_get_pre_scss($theme) {
     global $CFG;
 
     // Require the necessary libraries.
@@ -67,15 +67,15 @@ function theme_boost_union_child_get_pre_scss($theme) {
     // This should not be necessary as Moodle core calls the *_get_pre_scss() functions from all parent themes as well.
     // However, as soon as Boost Union would use $theme->settings in this function, $theme would be this theme here and
     // not Boost Union. The Boost Union developers are aware of this topic, but faults can always happen.
-    // If such a fault happens, the Boost Union Child administrator can switch the inheritance to 'Duplicate'.
+    // If such a fault happens, the UR Courses administrator can switch the inheritance to 'Duplicate'.
     // This way, we will add the pre SCSS code with the explicit use of the Boost Union configuration to the stack.
-    $inheritanceconfig = get_config('theme_boost_union_child', 'prescssinheritance');
-    if ($inheritanceconfig == THEME_BOOST_UNION_CHILD_SETTING_INHERITANCE_DUPLICATE) {
+    $inheritanceconfig = get_config('theme_urcourses', 'prescssinheritance');
+    if ($inheritanceconfig == THEME_URCOURSES_SETTING_INHERITANCE_DUPLICATE) {
         $scss .= theme_boost_union_get_pre_scss(theme_config::load('boost_union'));
     }
 
-    // And add Boost Union Child's pre SCSS file to the stack.
-    $scss .= file_get_contents($CFG->dirroot . '/theme/boost_union_child/scss/pre.scss');
+    // And add UR Courses's pre SCSS file to the stack.
+    $scss .= file_get_contents($CFG->dirroot . '/theme/urcourses/scss/pre.scss');
 
     /**********************************************************
      * EXTENSION POINT:
@@ -92,7 +92,7 @@ function theme_boost_union_child_get_pre_scss($theme) {
  * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_boost_union_child_get_extra_scss($theme) {
+function theme_urcourses_get_extra_scss($theme) {
     global $CFG;
 
     // Require the necessary libraries.
@@ -105,10 +105,10 @@ function theme_boost_union_child_get_extra_scss($theme) {
     // This should not be necessary as Moodle core calls the *_get_extra_scss() functions from all parent themes as well.
     // However, as soon as Boost Union would use $theme->settings in this function, $theme would be this theme here and
     // not Boost Union. The Boost Union developers are aware of this topic, but faults can always happen.
-    // If such a fault happens, the Boost Union Child administrator can switch the inheritance to 'Duplicate'.
+    // If such a fault happens, the UR Courses administrator can switch the inheritance to 'Duplicate'.
     // This way, we will add the extra SCSS code with the explicit use of the Boost Union configuration to the stack.
-    $inheritanceconfig = get_config('theme_boost_union_child', 'extrascssinheritance');
-    if ($inheritanceconfig == THEME_BOOST_UNION_CHILD_SETTING_INHERITANCE_DUPLICATE) {
+    $inheritanceconfig = get_config('theme_urcourses', 'extrascssinheritance');
+    if ($inheritanceconfig == THEME_URCOURSES_SETTING_INHERITANCE_DUPLICATE) {
         $scss .= theme_boost_union_get_extra_scss(theme_config::load('boost_union'));
     }
 
@@ -122,18 +122,18 @@ function theme_boost_union_child_get_extra_scss($theme) {
 }
 
 /**
- * Callback function for theme_boost_union to allow Boost Union Child to add cards to the Boost Union settings overview page.
+ * Callback function for theme_boost_union to allow UR Courses to add cards to the Boost Union settings overview page.
  * This function is expected to return an array of arrays containing values with the keys 'label', 'desc', 'btn' and 'url'.
  *
  * @return array
  */
-function theme_boost_union_child_extend_busettingsoverview() {
+function theme_urcourses_extend_busettingsoverview() {
 
     $cards[] = [
-        'label' => get_string('pluginname', 'theme_boost_union_child'),
-        'desc' => get_string('settingsoverview_buc_desc', 'theme_boost_union_child'),
+        'label' => get_string('pluginname', 'theme_urcourses'),
+        'desc' => get_string('settingsoverview_buc_desc', 'theme_urcourses'),
         'btn' => 'primary',
-        'url' => new \moodle_url('/admin/settings.php', ['section' => 'theme_boost_union_child']),
+        'url' => new \moodle_url('/admin/settings.php', ['section' => 'theme_urcourses']),
     ];
 
     return $cards;

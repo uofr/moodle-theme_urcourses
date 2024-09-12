@@ -15,16 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme Boost Union Child - Version file
+ * Theme UR Courses - Version file
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @copyright  2023 Daniel Poggenpohl <daniel.poggenpohl@fernuni-hagen.de> and Alexander Bias <bias@alexanderbias.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'theme_boost_union_child';
-$plugin->version = 2024010100;
+$plugin->component = 'theme_urcourses';
+$plugin->release = 'v4.3-r1';
+$plugin->version = 2024091100;
+$plugin->requires = 2023100906; // Requires Moodle 4.3.6 or later.
+$plugin->supported = [403, 403];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->dependencies = ['theme_boost_union' => 2023010548];
+$plugin->dependencies = ['theme_boost_union' => 2023102042];

@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme Boost Union Child - Local library
+ * Theme UR Courses - Local library
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @copyright  2023 Alexander Bias <bias@alexanderbias.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /***************************************************************
  * EXTENSION POINT:
- * Add whatever Boost Union Child local functions you need here.
+ * Add whatever UR Courses local functions you need here.
  **************************************************************/

@@ -1,4 +1,4 @@
-@theme @theme_boost_union_child
+@theme @theme_urcourses
 Feature: Extending the theme_boost_union plugin with a child theme
   In order to build a child theme for Boost Union
   As developer

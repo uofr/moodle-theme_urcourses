@@ -61,11 +61,11 @@ jobs:
         run: |
           moodle-plugin-ci add-plugin --branch main moodle-an-hochschulen/moodle-theme_boost_union
 
-      - name: Copy and modify Boost Union Behat tests to be used on Boost Union Child
+      - name: Copy and modify Boost Union Behat tests to be used on UR Courses
         # The Moodle Behat init script ignores Behat features from themes which are not active.
-        # However, our goal is to run all Boost Union tests on Boost Union Child to verify that Boost Union Child
+        # However, our goal is to run all Boost Union tests on UR Courses to verify that UR Courses
         # does not break any of Boost Union's features.
-        # To realize this, we copy the Boost Union feature files to the Boost Union child test directory.
+        # To realize this, we copy the Boost Union feature files to the UR Courses test directory.
         # The Behat init script won't ignore them there then.
         run: |
           # Copy the Boost Union feature files to a temporary folder.
@@ -73,11 +73,11 @@ jobs:
           cp moodle-plugin-ci-plugins/moodle-theme_boost_union/tests/behat/*.feature plugin/tests/behatbu/
           # Add a suffix to the feature title in the Boost Union features.
           # This is necessary as the Moodle code checker would otherwise complain about duplicate feature names.
-          sed -i '/^Feature:/ s/$/ - Running on Boost Union Child/' plugin/tests/behatbu/*.feature
-          # Add the @theme_boost_union_child tag to the tag list of the Boost Union features.
+          sed -i '/^Feature:/ s/$/ - Running on UR Courses/' plugin/tests/behatbu/*.feature
+          # Add the @theme_urcourses tag to the tag list of the Boost Union features.
           # This is necessary as the Moodle plugin validator would otherwise complain about the missing tag.
-          sed -i '1 s/$/ @theme_boost_union_child/' plugin/tests/behatbu/*.feature
-          # Move the modified Boost Union feature files to the Boost Union Child Behat test directory.
+          sed -i '1 s/$/ @theme_urcourses/' plugin/tests/behatbu/*.feature
+          # Move the modified Boost Union feature files to the UR Courses Behat test directory.
           mv plugin/tests/behatbu/*.feature plugin/tests/behat/
           rm -rf plugin/tests/behatbu
 
@@ -127,7 +127,7 @@ jobs:
       - name: Behat features
         id: behat
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci behat --profile chrome --suite boost_union_child --tags="@theme_boost_union,@theme_boost_union_child"
+        run: moodle-plugin-ci behat --profile chrome --suite urcourses --tags="@theme_boost_union,@theme_urcourses"
 
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}

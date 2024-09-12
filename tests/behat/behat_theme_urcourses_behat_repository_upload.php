@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Behat mod_quiz-related step definition overrides for the Boost Union Child theme.
+ * Behat upload repository-related step definition overrides for the UR Courses theme.
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @category   test
  * @copyright  2022 Luca Bösch, BFH Bern University of Applied Sciences luca.boesch@bfh.ch
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,18 +26,19 @@
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 // For that reason, we can't even rely on $CFG->admin being available here.
 
-require_once(__DIR__ . '/../../../boost_union/tests/behat/behat_theme_boost_union_behat_mod_quiz.php');
+require_once(__DIR__ . '/../../../boost_union/tests/behat/behat_theme_boost_union_behat_repository_upload.php');
 
-use Behat\Gherkin\Node\TableNode as TableNode;
-use Behat\Mink\Exception\ExpectationException as ExpectationException;
+use Behat\Mink\Exception\DriverException as DriverException,
+    Behat\Mink\Exception\ExpectationException as ExpectationException,
+    Behat\Gherkin\Node\TableNode as TableNode;
 
 /**
- * Quiz-related step definition overrides for the Boost Union Child theme.
+ * Repository upload-related step definition overrides for the UR Courses theme.
  *
- * @package    theme_boost_union_child
+ * @package    theme_urcourses
  * @category   test
  * @copyright  2022 Luca Bösch, BFH Bern University of Applied Sciences luca.boesch@bfh.ch
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_theme_boost_union_child_behat_mod_quiz extends behat_theme_boost_union_behat_mod_quiz {
+class behat_theme_urcourses_behat_repository_upload extends behat_theme_boost_union_behat_repository_upload {
 }
