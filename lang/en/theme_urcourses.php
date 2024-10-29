@@ -52,5 +52,51 @@ $string['extrascssinheritancesetting_desc'] = 'With this setting, you control if
  * Add your language strings for your settings here.
  *************************************************************/
 
+// Dark Mode
+$string['enabledarkmode'] = 'Enable dark mode';
+$string['disabledarkmode'] = 'Disable dark mode';
+
+// UR Student Account
+$string['resetmodal_title'] = 'Reset Password for Test Student Account';
+$string['resetmodal_button'] = 'Reset Password';
+$string['resetmodal_confirm'] = 'Are you sure you want to reset the password for your test student account {$a}?';
+$string['resetsuccess_title'] = 'Password Reset';
+$string['resetsuccess_body'] = 'Your test student password has been reset.';
+$string['resetfail_title'] = 'Password Reset Failed';
+$string['resetfail_body'] = 'Test student password reset failed.';
+
+$string['createmodal_title'] = 'Create Test Student Account';
+$string['createmodal_button'] = 'Create';
+$string['createmodal_confirm'] = 'Are you sure you want to create the test student account {$a}+urstudent@uregina.ca?';
+$string['createsuccess_title'] = 'Test Student Account Created';
+$string['createsuccess_body'] = 'Your test student account has been created.';
+$string['createfail_title'] = 'Test Student Account Failed';
+$string['createfail_body'] = 'Test student account creation failed.';
+
+$string['enrolurstudent'] = 'Enrol test student account';
+$string['unenrolurstudent'] = 'Unenrol test student account';
+$string['createteststudent'] = 'Create test student';
+$string['modifyteststudent'] = 'Modify test student';
+$string['newtestuser'] = 'New test student account';
+$string['newtestaccount'] = 'Hi {$a->firstname},
+
+Your new test student account at \'{$a->sitename}\' has been created,
+and you have been issued with a new temporary password.
+
+Your current login information is:
+   username: {$a->username}
+   password: {$a->newpassword}
+
+Please login to \'{$a->sitename}\' to test the new account:
+   {$a->link}
+
+In most mail programs, this should appear as a blue link
+which you can just click on.  If that doesn\'t work,
+then cut and paste the address into the address
+line at the top of your web browser window.
+
+Cheers from the \'{$a->sitename}\' administrator,
+{$a->signoff}';
+
 // Privacy API.
 $string['privacy:metadata'] = 'The UR Courses theme does not store any personal data about any user.';

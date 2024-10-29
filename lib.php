@@ -138,3 +138,50 @@ function theme_urcourses_extend_busettingsoverview() {
 
     return $cards;
 }
+
+/**
+ * Adds a Unenrol Test Student Account link to the course admin menu.
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param stdClass $course The course to object for the tool
+ * @param context $context The context of the course
+ * @return void
+ */
+function theme_urcourses_extend_navigation_course($navigation, $course, $context) {
+    global $DB, $USER, $PAGE;
+
+    if (!isloggedin()) {
+        return;
+    }
+
+    if (!has_capability('moodle/course:update', $context, $USER->id)) {
+        return;
+    }
+
+    $urstudentemail = $USER->username . '+urstudent@uregina.ca';
+    if (!$urstudent = $DB->get_record('user', ['email' => $urstudentemail])) {
+        $urstudentenrolled = is_enrolled($context, $urstudent->id, '', true);
+
+        $nodetext = $urstudentenrolled ? get_string('enrolurstudent', 'theme_urcourses') : get_string('unenrolurstudent', 'theme_urcourses');
+        $nodeurl = new moodle_url('');
+
+        $node = navigation_node::create(
+            $nodetext,
+            $nodeurl,
+            navigation_node::NODETYPE_LEAF
+        );
+
+        if ($PAGE->url->compare($nodeurl, URL_MATCH_BASE)) {
+            $node->make_active();
+        }
+
+        $navigation->add_node($node);
+    }
+}
+
+function theme_urcourses_get_fontawesome_icon_map() {
+    return [
+        'theme_urcourses:darkmode' => 'fa-moon',
+        'theme_urcourses:lightmode' => 'fa-sun'
+    ];
+}

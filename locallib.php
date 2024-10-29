@@ -26,3 +26,97 @@
  * EXTENSION POINT:
  * Add whatever UR Courses local functions you need here.
  **************************************************************/
+
+function theme_urcourses_enable_darkmode() {
+    return set_user_preference('theme_urcourses_darkmode', true);
+}
+
+function theme_urcourses_disable_darkmode() {
+    return unset_user_preference('theme_urcourses_darkmode');
+}
+
+function theme_urcourses_darkmode_enabled() {
+    return get_user_preferences('theme_urcourses_darkmode', false);
+}
+
+function theme_urcourses_can_create_test_student($userid) {
+    global $DB;
+
+    $teacherroleid = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
+    $managerroleid = $DB->get_field('role', 'id', ['shortname' => 'manager']);
+    $designerroleid = $DB->get_field('role', 'id', ['shortname' => 'instdesigner']);
+    $isteacher = $DB->record_exists('role_assignments', ['userid' => $userid, 'roleid' => $teacherroleid]);
+    $ismanager = $DB->record_exists('role_assignments', ['userid' => $userid, 'roleid' => $managerroleid]);
+    $isdesigner = $DB->record_exists('role_assignments', ['userid' => $userid, 'roleid' => $designerroleid]);
+
+    return ($isteacher|| $ismanager || $isdesigner || is_siteadmin());
+}
+
+function theme_urcourses_has_test_student_account($username) {
+    global $DB;
+
+    $email = "$username+urstudent@uregina.ca";
+    return $DB->record_exists('user', ['email' => $email]);
+}
+
+function theme_urcourses_create_darkmode_link() {
+    global $PAGE;
+
+    $darkmodeenabled = theme_urcourses_darkmode_enabled();
+
+    $darkmodelink = new stdClass();
+    $darkmodelink->divider = false;
+    $darkmodelink->itemtype = 'link';
+    $darkmodelink->link = true;
+    $darkmodelink->pixicon = $darkmodeenabled ? 'lightmode' : 'darkmode';
+    $darkmodelink->pixplugin = 'theme_urcourses';
+    $darkmodelink->title = theme_urcourses_darkmode_enabled()
+        ? get_string('disabledarkmode', 'theme_urcourses')
+        : get_string('enabledarkmode', 'theme_urcourses');
+    $darkmodelink->titleidentifier = 'darkmode,theme_urcourses';
+    $darkmodelink->url = new moodle_url($PAGE->url, ['darkmode' => !$darkmodeenabled]);
+
+    return $darkmodelink;
+}
+
+function theme_urcourses_create_teststudent_link($hasteststudentaccount) {
+    global $USER;
+
+    $studentaccountlink = new \stdClass();
+    $studentaccountlink->attributes = [
+        [
+            'name' => 'data-action',
+            'value' => $hasteststudentaccount ? 'resetteststudent' : 'createteststudent' 
+        ]
+    ];
+    $studentaccountlink->divider = false;
+    $studentaccountlink->itemtype = 'link';
+    $studentaccountlink->link = true;
+    $studentaccountlink->pixicon = 'i/user';
+    $studentaccountlink->title = $hasteststudentaccount
+        ? get_string('modifyteststudent', 'theme_urcourses')
+        : get_string('createteststudent', 'theme_urcourses');
+    $studentaccountlink->titleidentifier = 'studentaccount,theme_urcourses';
+    $studentaccountlink->url = '#';
+
+    return $studentaccountlink;
+}
+
+function theme_urcourses_add_custom_user_menu_items($usermenuitems, $customitems) {
+    $itemcount = count($usermenuitems);
+    $preferenceskey = 0;
+
+    foreach($usermenuitems as $key => $item) {
+        if (isset($item->title) && $item->title == 'Preferences') {
+            $preferenceskey = $key;
+            break;
+        }
+    }
+    $insertpoint = $preferenceskey + 1;
+
+    return array_merge(
+        array_slice($usermenuitems, 0, $insertpoint),
+        $customitems,
+        array_slice($usermenuitems, $insertpoint, $itemcount)
+    );
+}

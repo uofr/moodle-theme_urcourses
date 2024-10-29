@@ -15,19 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme UR Courses - Version file
+ * Theme UR Courses - Navbar layout include.
  *
  * @package    theme_urcourses
- * @copyright  2023 Daniel Poggenpohl <daniel.poggenpohl@fernuni-hagen.de> and Alexander Bias <bias@alexanderbias.de>
+ * @copyright  2024 John Lane <john.lane@uregina.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'theme_urcourses';
-$plugin->release = 'v4.3-r1';
-$plugin->version = 2024102800;
-$plugin->requires = 2023100906; // Requires Moodle 4.3.6 or later.
-$plugin->supported = [403, 403];
-$plugin->maturity = MATURITY_STABLE;
-$plugin->dependencies = ['theme_boost_union' => 2023102042];
+global $DB;
+
+// Extend boost union navbar.
+require_once($CFG->dirroot . '/theme/boost_union/layout/includes/navbar.php');
+
+// Custom items for user menu.
+$customitems = [];
+
+$customitems[] = theme_urcourses_create_darkmode_link();
+
+if (theme_urcourses_can_create_test_student($USER->id)) {
+    $hasteststudentaccount = theme_urcourses_has_test_student_account($USER->username);
+    $customitems[] = theme_urcourses_create_teststudent_link($hasteststudentaccount);
+    $templatecontext['hasteststudent'] = $hasteststudentaccount;
+}
+
+$templatecontext['usermenu']['items'] = theme_urcourses_add_custom_user_menu_items(
+    $templatecontext['usermenu']['items'],
+    $customitems
+);
