@@ -1,0 +1,33 @@
+{{< core/popover_region }}
+    {{$classes}}{{/classes}}
+
+    {{$attributes}}id="feedback_button_{{uniqid}}"{{/attributes}}
+
+    {{$togglelabel}}
+        {{#str}} feedback_label, theme_urcourses {{/str}}
+    {{/togglelabel}}
+
+    {{$togglecontent}}
+        {{#pix}} feedback, theme_urcourses, {{#str}} feedback_label, theme_urcourses {{/str}} {{/pix}}
+    {{/togglecontent}}
+
+    {{$containerlabel}}
+        {{#str}} feedback_label, theme_urcourses {{/str}}
+    {{/containerlabel}}
+
+    {{$headertext}}
+        {{#str}} feedback_label, theme_urcourses {{/str}}
+    {{/headertext}}
+
+    {{$headeractions}}
+    {{/headeractions}}
+
+    {{$content}}
+    {{/content}}
+{{/ core/popover_region }}
+
+{{#js}}
+    require(['theme_urcourses/feedbackbutton'], function(FeedbackButton) {
+        FeedbackButton.init('#feedback_button_{{uniqid}}');
+    });
+{{/js}}

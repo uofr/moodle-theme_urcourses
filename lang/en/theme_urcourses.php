@@ -98,5 +98,14 @@ line at the top of your web browser window.
 Cheers from the \'{$a->sitename}\' administrator,
 {$a->signoff}';
 
+$string['feedback_label'] = 'Feedback on UR Courses';
+$string['feedback_modal_header'] = 'Feedback';
+$string['feedback_modal_body'] = 'Give us your feedback on UR Courses.';
+$string['feedback_modal_problem'] = 'Report a problem';
+$string['feedback_modal_problem_label'] = 'What went wrong?';
+$string['feedback_modal_suggestion'] = 'Make a suggestion';
+$string['feedback_modal_suggestion_label'] = 'What can we do better?';
+$string['feedback_modal_back'] = 'Go back';
+
 // Privacy API.
 $string['privacy:metadata'] = 'The UR Courses theme does not store any personal data about any user.';

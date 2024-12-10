@@ -182,6 +182,24 @@ function theme_urcourses_extend_navigation_course($navigation, $course, $context
 function theme_urcourses_get_fontawesome_icon_map() {
     return [
         'theme_urcourses:darkmode' => 'fa-moon',
-        'theme_urcourses:lightmode' => 'fa-sun'
+        'theme_urcourses:lightmode' => 'fa-sun',
+        'theme_urcourses:feedback' => 'fa-face-smile',
+        'theme_urcourses:goback' => 'fa-arrow-left'
     ];
+}
+
+function theme_urcourses_render_navbar_output() {
+    global $USER, $OUTPUT;
+
+    if (!isloggedin()) {
+        return '';
+    }
+
+    // Compose the popover menu.
+    $html = $OUTPUT->render_from_template(
+        'theme_urcourses/feedback-button',
+        []
+    );
+
+    return $html;
 }
