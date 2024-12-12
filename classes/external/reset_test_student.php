@@ -27,44 +27,38 @@ namespace theme_urcourses\external;
 use \core_external\external_api;
 use \core_external\external_function_parameters;
 use \core_external\external_value;
-use \core_external\external_single_structure;
+
+require_once($CFG->dirroot . '/theme/urcourses/locallib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
 class reset_test_student extends external_api {
     public static function execute_parameters() {
-        return new external_function_parameters([
-            'userid' => new external_value(PARAM_INT),
-            'username' => new external_value(PARAM_TEXT),
-            'email' => new external_value(PARAM_TEXT)
-        ]);
+        return new external_function_parameters([]);
     }
 
     public static function execute_returns() {
         return new external_value(PARAM_BOOL);
     }
 
-    public static function execute($userid, $username, $email) {
+    public static function execute() {
         global $DB, $USER;
-
-        $params = self::validate_parameters(
-            self::execute_parameters(),
-            [
-                'userid' => $userid,
-                'username' => $username,
-                'email' => $email
-            ]
-        );
 
         $context = \context_user::instance($USER->id);
         self::validate_context($context);
 
-        if ($params['email'] != "$USER->username+urstudent@uregina.ca") {
-            return false;
+        if (!theme_urcourses_can_create_test_student($USER->id)) {
+            throw new \moodle_exception('teststudenteditnotallowed', 'theme_urcourses');
         }
 
-        if ($user = $DB->get_record('user', ['id' => $params['userid']])) {
-            return  setnew_password_and_mail($user);
+        $email = "$USER->username+urstudent@uregina.ca";
+        if ($user = $DB->get_record('user', ['email' => $email])) {
+            if (setnew_password_and_mail($user)) {
+                return true;
+            }
+            else {
+                throw new \moodle_exception('teststudentcoultnotsetpassword', 'theme_urcourses');
+            }
         }
     }
 }

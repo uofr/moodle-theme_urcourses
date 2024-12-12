@@ -2,9 +2,6 @@ import $ from 'jquery';
 import {get_string as getString} from 'core/str';
 import Templates from 'core/templates';
 import Modal from 'core/modal';
-import ModalEvents from 'core/modal_events';
-import ModalSaveCancel from 'core/modal_save_cancel';
-import Notification from 'core/notification';
 
 const SELECTORS = {
     PROBLEM_BUTTON: '#problem_button',

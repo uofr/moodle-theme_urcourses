@@ -47,6 +47,9 @@ $string['prescssinheritancesetting_desc'] = 'With this setting, you control if t
 $string['extrascssinheritancesetting'] = 'Extra SCSS inheritance';
 $string['extrascssinheritancesetting_desc'] = 'With this setting, you control if the extra SCSS code from Boost Union should be inherited or duplicated.';
 
+// Privacy API.
+$string['privacy:metadata'] = 'The UR Courses theme does not store any personal data about any user.';
+
 /**************************************************************
  * EXTENSION POINT:
  * Add your language strings for your settings here.
@@ -59,7 +62,8 @@ $string['disabledarkmode'] = 'Disable dark mode';
 // UR Student Account
 $string['resetmodal_title'] = 'Reset Password for Test Student Account';
 $string['resetmodal_button'] = 'Reset Password';
-$string['resetmodal_confirm'] = 'Are you sure you want to reset the password for your test student account {$a}?';
+$string['resetmodal_confirm'] = 'Are you sure you want to reset the password for your test student account <strong>{$a}</strong>?';
+$string['resetmodal_date'] = 'Account Created On';
 $string['resetsuccess_title'] = 'Password Reset';
 $string['resetsuccess_body'] = 'Your test student password has been reset.';
 $string['resetfail_title'] = 'Password Reset Failed';
@@ -67,7 +71,12 @@ $string['resetfail_body'] = 'Test student password reset failed.';
 
 $string['createmodal_title'] = 'Create Test Student Account';
 $string['createmodal_button'] = 'Create';
-$string['createmodal_confirm'] = 'Are you sure you want to create the test student account {$a}+urstudent@uregina.ca?';
+$string['createmodal_intro'] = 'The following test user account will be created:';
+$string['createmodal_email'] = 'Email';
+$string['createmodal_username'] = 'Username';
+$string['createmodal_helptext'] = 'You can enrol this account to test and experience a course as a student.';
+$string['createmodal_confirmtext'] = 'Would you like to create the test student account?';
+$string['createmodal_confirm'] = 'Are you sure you want to create the test student account {$a}?';
 $string['createsuccess_title'] = 'Test Student Account Created';
 $string['createsuccess_body'] = 'Your test student account has been created.';
 $string['createfail_title'] = 'Test Student Account Failed';
@@ -107,5 +116,10 @@ $string['feedback_modal_suggestion'] = 'Make a suggestion';
 $string['feedback_modal_suggestion_label'] = 'What can we do better?';
 $string['feedback_modal_back'] = 'Go back';
 
-// Privacy API.
-$string['privacy:metadata'] = 'The UR Courses theme does not store any personal data about any user.';
+// Errors.
+
+$string['teststudentnotallowed'] = 'You do not have permission to create a test student.';
+$string['teststudenteditnotallowed'] = 'You do not have permission to edit a test student account.';
+$string['teststudentexists'] = 'You already have a test student account.';
+$string['teststudentcouldnotemail'] = 'Failed to send test student account email.';
+$string['teststudentcoultnotsetpassword'] = 'Could not set new password for test student.';

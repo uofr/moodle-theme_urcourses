@@ -32,27 +32,19 @@ export const testAccountInfo = () => {
     return Ajax.call([request])[0];
 };
 
-export const createTestStudent = (user) => {
+export const createTestStudent = () => {
     const request = {
         methodname: 'theme_urcourses_create_test_student',
-        args: {
-            userid: user.userid,
-            username: user.username,
-            email:  user.email
-        }
+        args: {}
     };
 
     return Ajax.call([request])[0];
 };
 
-export const resetTestStudent = (user) => {
+export const resetTestStudent = () => {
     const request = {
         methodname: 'theme_urcourses_reset_test_student',
-        args: {
-            userid: user.userid,
-            username: user.username,
-            email:  user.email
-        }
+        args: {}
     };
 
     return Ajax.call([request])[0];

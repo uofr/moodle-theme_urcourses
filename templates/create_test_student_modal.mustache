@@ -1,22 +1,28 @@
-<div class="mb-3">
-    <strong>The following test user account will be created: </strong>
-</div>
-<div class="mb-2">
-    <div>
-        <strong>Email address </strong>
-    </div>
-    <div>
-        {{username}}+urstudent@uregina.ca
-    </div>
-</div>
-<div>
-    <div>
-        <strong>Username </strong>
-    </div>
-    <div>
-        {{username}}-urstudent
-    </div>
-</div>
+<p>
+    <strong>
+        {{#str}} createmodal_intro, theme_urcourses {{/str}}
+    </strong>
+</p>
+<p>
+    <strong>
+        {{#str}} createmodal_email, theme_urcourses {{/str}}
+    </strong>
+    <br>
+    {{email}}
+</p>
+<p>
+    <strong>
+        {{#str}} createmodal_username, theme_urcourses {{/str}}
+    </strong>
+    <br>
+    {{username}}
+</p>
 <hr/>
-You can enrol this account to test and experience a course as a student.
-<strong>Would you like to create the test student account?</strong>
+<p>
+    {{#str}} createmodal_helptext, theme_urcourses {{/str}}
+</p>
+<p>
+    <strong>
+        {{#str}} createmodal_confirmtext, theme_urcourses {{/str}}
+    </strong>
+</p>

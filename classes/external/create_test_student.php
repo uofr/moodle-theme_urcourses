@@ -36,89 +36,74 @@ defined('MOODLE_INTERNAL') || die();
 
 class create_test_student extends external_api {
     public static function execute_parameters() {
-        return new external_function_parameters([
-            'userid' => new external_value(PARAM_INT),
-            'username' => new external_value(PARAM_TEXT),
-            'email' => new external_value(PARAM_TEXT)
-        ]);
+        return new external_function_parameters([]);
     }
 
     public static function execute_returns() {
         return new external_value(PARAM_BOOL);
     }
 
-    public static function execute($userid, $username, $email) {
+    public static function execute() {
         global $CFG, $DB, $USER;
-
-        $params = self::validate_parameters(
-            self::execute_parameters(),
-            [
-                'userid' => $userid,
-                'username' => $username,
-                'email' => $email
-            ]
-        );
 
         $context = \context_user::instance($USER->id);
         self::validate_context($context);
 
         if (!theme_urcourses_can_create_test_student($USER->id)) {
-            return false;
+            throw new \moodle_exception('teststudentnotallowed', 'theme_urcourses');
         }
 
         $email = "$USER->username+urstudent@uregina.ca";
 
         if ($user = $DB->get_record('user', ['email' => $email])) {
-            return false;
+            throw new \moodle_exception('teststudentexists', 'theme_urcourses');
         }
-        else {
-            $user = new \stdClass();
-            $user->email = $email;
-            $user->username = "$USER->username-urstudent";
-            $user->firstname = $USER->firstname;
-            $user->lastname = "$USER->lastname (urstudent)";
-            $user->auth = 'manual';
 
-            $newuserid = user_create_user($user, false, true);
-            $newuser = $DB->get_record('user', ['id' => $newuserid]);
+        $user = new \stdClass();
+        $user->email = $email;
+        $user->username = "$USER->username-urstudent";
+        $user->firstname = $USER->firstname;
+        $user->lastname = "$USER->lastname (urstudent)";
+        $user->auth = 'manual';
+        $user->mnethostid = $CFG->mnet_localhost_id;
+        $user->confirmed = 1;
+        $user->timecreated = time();
+        $user->id = user_create_user($user, false, true);
 
-            $site = get_site();
-            $supportuser = \core_user::get_support_user();
+        $authplugin = get_auth_plugin($user->auth);
 
-            $userauth = get_auth_plugin($newuser->auth);
-            if (!$userauth->can_reset_password() || !is_enabled_auth($newuser->auth)) {
-                trigger_error("Attempt to reset user password for user $newuser->username with Auth $newuser->auth.");
-                return false;
-            }
-
-            $newpassword = generate_password();
-
-            if (!$userauth->user_update_password($newuser, $newpassword)) {
-                trigger_error("cannotsetpassword");
-            }
-
-            $a = new \stdClass();
-            $a->firstname   = $newuser->firstname;
-            $a->lastname    = $newuser->lastname;
-            $a->sitename    = format_string($site->fullname);
-            $a->username    = $newuser->username;
-            $a->newpassword = $newpassword;
-            $a->link        = $CFG->wwwroot .'/login';
-            $a->signoff     = generate_email_signoff();
-
-            $message = get_string('newtestaccount', 'theme_urcourses', $a);
-            $subject  = format_string($site->fullname) .': '. get_string('newtestuser','theme_urcourses');
-
-            unset_user_preference('create_password', $newuser); // Prevent cron from generating the password.
-
-            $issent = email_to_user($newuser, $supportuser, $subject, $message);
-            if (!$issent) {
-                trigger_error("Could not send email to $newuser->username");
-            }
-
-            set_user_preference('auth_forcepasswordchange', 1, $newuser);
-
-            return true;
+        if (!$authplugin->can_change_password()) {
+            throw new \moodle_exception('teststudentcoultnotsetpassword', 'theme_urcourses');
         }
+
+        $password = generate_password();
+        if (!$authplugin->user_update_password($user, $password)) {
+            throw new \moodle_exception('teststudentcoultnotsetpassword', 'theme_urcourses');
+        }
+
+        unset_user_preference('create_password', $user); // Prevent cron from generating the password.
+        set_user_preference('auth_forcepasswordchange', 1, $user);
+
+        $supportuser = \core_user::get_support_user();
+        $site = get_site();
+
+        $a = new \stdClass();
+        $a->firstname   = $user->firstname;
+        $a->lastname    = $user->lastname;
+        $a->sitename    = format_string($site->fullname);
+        $a->username    = $user->username;
+        $a->newpassword = $password;
+        $a->link        = $CFG->wwwroot .'/login';
+        $a->signoff     = generate_email_signoff();
+
+        $message = get_string('newtestaccount', 'theme_urcourses', $a);
+        $subject  = format_string($site->fullname) .': '. get_string('newtestuser','theme_urcourses');
+
+        $issent = email_to_user($user, $supportuser, $subject, $message);
+        if (!$issent) {
+            throw new \moodle_exception('teststudentcouldnotemail', 'theme_urcourses');
+        }
+
+        return true;
     }
 }

@@ -29,6 +29,8 @@ use \core_external\external_function_parameters;
 use \core_external\external_value;
 use \core_external\external_single_structure;
 
+require_once($CFG->dirroot . '/theme/urcourses/locallib.php');
+
 defined('MOODLE_INTERNAL') || die();
 
 class test_student_info extends external_api {
@@ -50,6 +52,10 @@ class test_student_info extends external_api {
     public static function execute() {
         global $DB, $USER;
 
+        if (!theme_urcourses_can_create_test_student($USER->id)) {
+            throw new \moodle_exception('teststudentnotallowed', 'theme_urcourses');
+        }
+
         $email = "$USER->username+urstudent@uregina.ca";
 
         if ($teststudent = $DB->get_record('user', ['email' => $email])) {
@@ -61,7 +67,8 @@ class test_student_info extends external_api {
             ];
         } else {
             return [
-                'username' => $USER->username
+                'username' => "$USER->username-urstudent",
+                'email' => $email
             ];
         }
     }

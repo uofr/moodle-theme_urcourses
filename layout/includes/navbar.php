@@ -31,13 +31,10 @@ require_once($CFG->dirroot . '/theme/boost_union/layout/includes/navbar.php');
 
 // Custom items for user menu.
 $customitems = [];
-
 $customitems[] = theme_urcourses_create_darkmode_link();
-
 if (theme_urcourses_can_create_test_student($USER->id)) {
     $hasteststudentaccount = theme_urcourses_has_test_student_account($USER->username);
     $customitems[] = theme_urcourses_create_teststudent_link($hasteststudentaccount);
-    $templatecontext['hasteststudent'] = $hasteststudentaccount;
 }
 
 $templatecontext['usermenu']['items'] = theme_urcourses_add_custom_user_menu_items(

@@ -25,9 +25,9 @@ import $ from 'jquery';
 import * as Repository from 'theme_urcourses/repository';
 import {get_string as getString} from 'core/str';
 import Templates from 'core/templates';
-import Modal from 'core/modal';
 import ModalEvents from 'core/modal_events';
 import ModalSaveCancel from 'core/modal_save_cancel';
+import ModalCancel from 'core/modal_cancel';
 import Notification from 'core/notification';
 
 const SELECTORS = {
@@ -47,130 +47,120 @@ const init = (root) => {
 const registerEventListeners = (root) => {
     root.on('click', SELECTORS.CREATE_TEST_STUDENT, async (e) => {
         e.preventDefault();
-        try {
-            const testStudent = await Repository.testAccountInfo();
-            const modal = await createStudentModal(testStudent);
-            modal.getRoot().on(ModalEvents.save, async () => {
-                try {
-                    const confirmModal = await confirmCreateStudentModal(testStudent);
-                    confirmModal.getRoot().on(ModalEvents.save, async () => {
-                        try {
-                            const result = await Repository.createTestStudent(testStudent);
-                            if (result) {
-                                await showStatusPopup(
-                                    getString('createsuccess_title', 'theme_urcourses'),
-                                    getString('createsuccess_body', 'theme_urcourses')
-                                );
-                            } else {
-                                await showStatusPopup(
-                                    getString('createfail_title', 'theme_urcourses'),
-                                    getString('createfail_body', 'theme_urcourses')
-                                );
-                            }
-                        } catch (error) {
-                            Notification.exception(error);
-                        }
-                    });
-                } catch (error) {
-                    Notification.exception(error);
-                }
-            });
-        } catch (error) {
-            Notification.exception(error);
-        }
+        const testStudent = await Repository.testAccountInfo();
+        testStudentModal(
+            getString('createmodal_title', 'theme_urcourses'),
+            Templates.render(TEMPLATES.CREATE_TEST_STUDENT_MODAL, testStudent),
+            getString('createmodal_button', 'theme_urcourses'),
+            createTestStudent
+        );
     });
 
     root.on('click', SELECTORS.RESET_TEST_STUDENT, async (e) => {
         e.preventDefault();
-        try {
-            const testStudent = await Repository.testAccountInfo();
-            const modal = await resetStudentModal(testStudent);
-            modal.getRoot().on(ModalEvents.save, async () => {
-                try {
-                    const confirmModal = await confirmResetStudentModal(testStudent);
-                    confirmModal.getRoot().on(ModalEvents.save, async () => {
-                        try {
-                            const result = await Repository.resetTestStudent(testStudent);
-                            if (result) {
-                                await showStatusPopup(
-                                    getString('resetsuccess_title', 'theme_urcourses'),
-                                    getString('resetsuccess_body', 'theme_urcourses')
-                                );
-                            } else {
-                                await showStatusPopup(
-                                    getString('resetfail_title', 'theme_urcourses'),
-                                    getString('resetfail_body', 'theme_urcourses')
-                                );
-                            }
-                        } catch (error) {
-                            Notification.exception(error);
-                        }
-                    });
-                } catch (error) {
-                    Notification.exception(error);
-                }
-            });
-        } catch (error) {
-            Notification.exception(error);
+        const testStudent = await Repository.testAccountInfo();
+        testStudentModal(
+            getString('resetmodal_title', 'theme_urcourses'),
+            Templates.render(TEMPLATES.RESET_TEST_STUDENT_MODAL, testStudent),
+            getString('resetmodal_button', 'theme_urcourses'),
+            () => {
+                resetTestStudentConfirm(testStudent);
+            }
+        );
+    });
+};
+
+const testStudentModal = async (title, body, saveButton, saveAction) => {
+    try {
+        const modal = await ModalSaveCancel.create({
+            title: title,
+            body: body,
+            removeOnClose: true,
+            buttons: {
+                save: saveButton
+            },
+            show: true
+        });
+        modal.getRoot().on(ModalEvents.save, () => {
+            modal.destroy();
+            saveAction();
+        });
+    } catch (error) {
+        Notification.exception(error);
+    }
+};
+
+const confirmModal = async (title, body, saveButton, saveAction) => {
+    try {
+        const modal = await ModalSaveCancel.create({
+            title: title,
+            body: body,
+            removeOnClose: true,
+            buttons: {
+                save: saveButton
+            },
+            show: true
+        });
+        modal.getRoot().on(ModalEvents.save, () => {
+            modal.destroy();
+            saveAction();
+        });
+    } catch (error) {
+        Notification.exception(error);
+    }
+};
+
+const statusModal = async (title, body) => {
+    try {
+        await ModalCancel.create({
+            title: title,
+            body: body,
+            removeOnClose: true,
+            show: true,
+            buttons: {
+                cancel: getString('ok')
+            }
+        });
+    } catch (error) {
+        Notification.exception(error);
+    }
+};
+
+const createTestStudent = async () => {
+    try {
+        const response = await Repository.createTestStudent();
+        if (response) {
+            statusModal(
+                getString('createsuccess_title', 'theme_urcourses'),
+                getString('createsuccess_body', 'theme_urcourses')
+            );
         }
-    });
+    } catch (error) {
+        Notification.exception(error);
+    }
 };
 
-const createStudentModal = (testStudent) => {
-    return ModalSaveCancel.create({
-        title: getString('createmodal_title', 'theme_urcourses'),
-        body: Templates.render(TEMPLATES.CREATE_TEST_STUDENT_MODAL, testStudent),
-        removeOnClose: true,
-        buttons: {
-            save: getString('createmodal_button', 'theme_urcourses')
-        },
-        show: true
-    });
+const resetTestStudentConfirm = (testStudent) => {
+    confirmModal(
+        getString('resetmodal_title', 'theme_urcourses'),
+        getString('resetmodal_confirm', 'theme_urcourses', testStudent.username),
+        getString('resetmodal_button', 'theme_urcourses'),
+        resetTestStudentPassword
+    );
 };
 
-const confirmCreateStudentModal = (testStudent) => {
-    return ModalSaveCancel.create({
-        title: getString('createmodal_title', 'theme_urcourses'),
-        body: getString('createmodal_confirm', 'theme_urcourses', testStudent.username),
-        removeOnClose: true,
-        buttons: {
-            save: getString('createmodal_button', 'theme_urcourses')
-        },
-        show: true
-    });
-};
-
-const resetStudentModal = (testStudent) => {
-    return ModalSaveCancel.create({
-        title: getString('resetmodal_title', 'theme_urcourses'),
-        body: Templates.render(TEMPLATES.RESET_TEST_STUDENT_MODAL, testStudent),
-        removeOnClose: true,
-        buttons: {
-            save: getString('resetmodal_button', 'theme_urcourses')
-        },
-        show: true
-    });
-};
-
-const confirmResetStudentModal = (testStudent) => {
-    return ModalSaveCancel.create({
-        title: getString('resetmodal_title', 'theme_urcourses'),
-        body: getString('resetmodal_confirm', 'theme_urcourses', testStudent.email),
-        removeOnClose: true,
-        buttons: {
-            save: getString('resetmodal_button', 'theme_urcourses')
-        },
-        show: true
-    });
-};
-
-const showStatusPopup = (title, body) => {
-    return Modal.create({
-        title: title,
-        body: body,
-        removeOnClose: true,
-        show: true
-    });
+const resetTestStudentPassword = async () => {
+    try {
+        const response = await Repository.resetTestStudent();
+        if (response) {
+            statusModal(
+                getString('resetsuccess_title', 'theme_urcourses'),
+                getString('resetsuccess_body', 'theme_urcourses')
+            );
+        }
+    } catch (error) {
+        Notification.exception(error);
+    }
 };
 
 export default {

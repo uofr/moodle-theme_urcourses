@@ -1,18 +1,27 @@
-<div>
-    <strong>Email address </strong>
-</div>
-<div>
-    <span>{{email}}</span>
-</div>
-<div>
-    <strong>Username </strong>
-</div>
-<div>
-    <span>{{username}}</span>
-</div>
-<div>
-    <strong>Account Creation Date </strong>
-</div>
-<div>
-    <span> {{datecreated}} </span>
-</div>
+<p>
+    <strong>
+        {{#str}} createmodal_email, theme_urcourses {{/str}}
+    </strong>
+    <br>
+    <span>
+        {{{email}}}
+    </span>
+</p>
+<p>
+    <strong>
+        {{#str}} createmodal_username, theme_urcourses {{/str}}
+    </strong>
+    <br>
+    <span>
+        {{username}}
+    </span>
+</p>
+<p>
+    <strong>
+        {{#str}} resetmodal_date, theme_urcourses {{/str}}
+    </strong>
+    <br>
+    <span>
+        {{datecreated}}
+    </span>
+</p>
