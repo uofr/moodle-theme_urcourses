@@ -46,4 +46,19 @@ $functions = [
         'type'          => 'write',
         'ajax'          => true
     ],
+    'theme_urcourses_get_enrolled_courses_by_timeline_classification' => [
+        'classname'     => 'theme_urcourses\external\get_enrolled_courses',
+        'methodname'    => 'get_enrolled_courses_by_timeline_classification',
+        'description'   => 'Grabs list of courses in specific timeline, based on code in core with
+                            teacher vs student tweaks.',
+        'type'          => 'read',
+        'ajax'          => 'true',
+    ],
+    'theme_urcourses_get_course_summary' => [
+        'classname'     => 'theme_urcourses\external\get_course_summary',
+        'methodname'    => 'execute',
+        'description'   => 'self explanatory',
+        'type'          => 'read',
+        'ajax'          => 'true',
+    ],
 ];

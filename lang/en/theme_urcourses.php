@@ -116,6 +116,16 @@ $string['feedback_modal_suggestion'] = 'Make a suggestion';
 $string['feedback_modal_suggestion_label'] = 'What can we do better?';
 $string['feedback_modal_back'] = 'Go back';
 
+// My Courses (block_myoverview) Customizations
+$string['notavailabletostudents'] = 'Course unavailable to students';
+$string['coursehasended'] = 'Course ended {$a}';
+$string['coursenotstarted'] = 'Course begins {$a}';
+$string['coursesummarybuttontitle'] = 'The course summary is always available to students';
+$string['coursesummarybuttontext'] = 'View Course Summary';
+$string['coursesummarymissingtext'] = 'No course summary has been provided at this time.';
+$string['coursesummaryedit'] = 'Edit course summary';
+$string['strtimemonthdayyear'] = '%B %d, %Y';
+
 // Errors.
 
 $string['teststudentnotallowed'] = 'You do not have permission to create a test student.';

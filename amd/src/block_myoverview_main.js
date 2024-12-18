@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,19 +14,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Theme UR Courses - Version file
+ * Javascript to initialise the myoverview block.
  *
- * @package    theme_urcourses
- * @copyright  2023 Daniel Poggenpohl <daniel.poggenpohl@fernuni-hagen.de> and Alexander Bias <bias@alexanderbias.de>
+ * @copyright  2018 Bas Brands <bas@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+import * as View from 'theme_urcourses/block_myoverview_view';
+import * as ViewNav from 'theme_urcourses/block_myoverview_view_nav';
 
-$plugin->component = 'theme_urcourses';
-$plugin->release = 'v4.3-r1';
-$plugin->version = 2024121700;
-$plugin->requires = 2023100906; // Requires Moodle 4.3.6 or later.
-$plugin->supported = [403, 403];
-$plugin->maturity = MATURITY_STABLE;
-$plugin->dependencies = ['theme_boost_union' => 2023102042];
+/**
+ * Initialise all of the modules for the overview block.
+ *
+ * @param {object} root The root element for the overview block.
+ */
+export const init = (root) => {
+    // Initialise the course navigation elements.
+    ViewNav.init(root);
+    // Initialise the courses view modules.
+    View.init(root);
+};
