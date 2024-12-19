@@ -54,6 +54,7 @@ class reset_test_student extends external_api {
         $email = "$USER->username+urstudent@uregina.ca";
         if ($user = $DB->get_record('user', ['email' => $email])) {
             if (setnew_password_and_mail($user)) {
+                set_user_preference('auth_forcepasswordchange', 1, $user);
                 return true;
             }
             else {
