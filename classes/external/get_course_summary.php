@@ -61,7 +61,7 @@ class get_course_summary extends external_api {
         $course = get_course($params['courseid']);
         $canedit = has_capability('moodle/course:changesummary', $context);
         $editlink = $canedit
-            ? (new \moodle_url('course/edit.php', ['id' => $params['courseid']]))->out()
+            ? (new \moodle_url('/course/edit.php', ['id' => $params['courseid']]))->out()
             : '';
 
         return [
