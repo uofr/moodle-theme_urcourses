@@ -19,10 +19,26 @@
 </p>
 <hr/>
 <p>
-    {{#str}} createmodal_helptext, theme_urcourses {{/str}}
+    {{#str}}
+        createmodal_email_helptext,
+        theme_urcourses,
+        {
+            "email": {{#quote}} {{email}} {{/quote}},
+            "emailoriginal": {{#quote}} {{emailoriginal}} {{/quote}}
+        }
+    {{/str}}
+</p>
+<hr/>
+<p>
+    {{#str}}
+        createmodal_helptext,
+        theme_urcourses,
+        {
+            "email": {{#quote}} {{email}} {{/quote}},
+            "emailoriginal": {{#quote}} {{emailoriginal}} {{/quote}}
+        }
+    {{/str}}
 </p>
 <p>
-    <strong>
-        {{#str}} createmodal_confirmtext, theme_urcourses {{/str}}
-    </strong>
+    {{#str}} createmodal_confirmtext, theme_urcourses {{/str}}
 </p>

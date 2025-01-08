@@ -65,7 +65,7 @@ $string['resetmodal_button'] = 'Reset Password';
 $string['resetmodal_confirm'] = 'Are you sure you want to reset the password for your test student account <strong>{$a}</strong>?';
 $string['resetmodal_date'] = 'Account Created On';
 $string['resetsuccess_title'] = 'Password Reset';
-$string['resetsuccess_body'] = 'Your test student password has been reset.';
+$string['resetsuccess_body'] = 'Your test student password has been reset. An email will be sent to your <strong>{$a}</strong> account with instructions on how to set a new password for your test student.';
 $string['resetfail_title'] = 'Password Reset Failed';
 $string['resetfail_body'] = 'Test student password reset failed.';
 
@@ -74,11 +74,12 @@ $string['createmodal_button'] = 'Create';
 $string['createmodal_intro'] = 'The following test user account will be created:';
 $string['createmodal_email'] = 'Email';
 $string['createmodal_username'] = 'Username';
-$string['createmodal_helptext'] = 'You can enrol this account to test and experience a course as a student.';
+$string['createmodal_email_helptext'] = 'Email sent to <strong>{$a->email}</strong> will be directed to your <strong>{$a->emailoriginal}</strong> account.';
+$string['createmodal_helptext'] = 'Upon clicking <strong>create</strong>, an email will be sent to your <strong>{$a->emailoriginal}</strong> account with instructions on how to log in to your new test student account.';
 $string['createmodal_confirmtext'] = 'Would you like to create the test student account?';
 $string['createmodal_confirm'] = 'Are you sure you want to create the test student account {$a}?';
 $string['createsuccess_title'] = 'Test Student Account Created';
-$string['createsuccess_body'] = 'Your test student account has been created.';
+$string['createsuccess_body'] = 'Information on how to log in to your new test student account will be sent to your <strong>{$a}</strong> account.';
 $string['createfail_title'] = 'Test Student Account Failed';
 $string['createfail_body'] = 'Test student account creation failed.';
 
@@ -87,26 +88,40 @@ $string['unenrolurstudent'] = 'Unenrol test student account';
 $string['createteststudent'] = 'Create test student';
 $string['modifyteststudent'] = 'Modify test student';
 $string['newtestuser'] = 'New test student account';
-$string['newtestaccount'] = 'Hi {$a->firstname},
-
-Your new test student account at \'{$a->sitename}\' has been created,
-and you have been issued with a new temporary password.
-
-Your current login information is:
-   username: {$a->username}
-   password: {$a->newpassword}
-
-Please login to \'{$a->sitename}\' to test the new account:
-   {$a->link}
-
-In most mail programs, this should appear as a blue link
-which you can just click on.  If that doesn\'t work,
-then cut and paste the address into the address
-line at the top of your web browser window.
-
-Cheers from the \'{$a->sitename}\' administrator,
-{$a->signoff}';
-
+$string['resettestuser'] = 'Test student account password reset.';
+$string['newtestaccount_email'] = '<p>Hi {$a->firstname},</p>
+<p>Your new test student account at \'{$a->sitename}\' has been created.</p>
+<p>To log in to your test student account:</p>
+<ol>
+   <li>Log out of UR Courses.</li>
+   <li>Go to {$a->link}.</li>
+   <li>Click <strong>log in with other credentials</strong>.</li>
+   <li>Enter your test student username and temporary password.</li>
+   <ul>
+      <li>username: {$a->username}</li>
+      <li>password: {$a->newpassword}</li>
+   </ul>
+   <li>Press the <strong>Log in</strong> button.</li>
+</ol>
+<p>After you log in, you will have to create a new password for your test student account with at least 6 characters.</p>
+<p>{$a->signoff}</p>';
+$string['resetteststudent_email'] = '<p>Hi Admin,</p>
+<p>Your test student account password has been reset.</p>
+<p>To set a new password for your test student account:</p>
+<ol>
+   <li>Log out of UR Courses.</li>
+   <li>Go to {$a->link}.</li>
+   <li>Click <strong>log in with other credentials</strong>.</li>
+   <li>Enter your test student username and temporary password.</li>
+   <ul>
+      <li>username: {$a->username}</li>
+      <li>password: {$a->newpassword}</li>
+   </ul>
+   <li>Press the <strong>Log in</strong> button.</li>
+</ol>
+<p>After you log in, you will be able to create a new password for your test student account.</p>
+<p>Note that the password must contain at least 6 characters.</p>
+<p>{$a->signoff}</p>';
 $string['feedback_label'] = 'Feedback on UR Courses';
 $string['feedback_modal_header'] = 'Feedback';
 $string['feedback_modal_body'] = 'Give us your feedback on UR Courses.';

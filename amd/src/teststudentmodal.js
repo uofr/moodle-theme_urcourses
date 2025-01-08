@@ -129,12 +129,10 @@ const statusModal = async (title, body) => {
 const createTestStudent = async () => {
     try {
         const response = await Repository.createTestStudent();
-        if (response) {
-            statusModal(
-                getString('createsuccess_title', 'theme_urcourses'),
-                getString('createsuccess_body', 'theme_urcourses')
-            );
-        }
+        statusModal(
+            getString('createsuccess_title', 'theme_urcourses'),
+            getString('createsuccess_body', 'theme_urcourses', response.email)
+        );
     } catch (error) {
         Notification.exception(error);
     }
@@ -155,7 +153,7 @@ const resetTestStudentPassword = async () => {
         if (response) {
             statusModal(
                 getString('resetsuccess_title', 'theme_urcourses'),
-                getString('resetsuccess_body', 'theme_urcourses')
+                getString('resetsuccess_body', 'theme_urcourses', response.email)
             );
         }
     } catch (error) {

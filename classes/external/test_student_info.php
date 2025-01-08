@@ -44,6 +44,7 @@ class test_student_info extends external_api {
                 'userid' => new external_value(PARAM_INT, '', VALUE_DEFAULT),
                 'username' => new external_value(PARAM_TEXT, '', VALUE_DEFAULT),
                 'email' => new external_value(PARAM_TEXT, '',  VALUE_DEFAULT),
+                'emailoriginal' => new external_value(PARAM_TEXT, '', VALUE_DEFAULT),
                 'datecreated' => new external_value(PARAM_TEXT, '', VALUE_DEFAULT)
             ]
         );
@@ -63,12 +64,14 @@ class test_student_info extends external_api {
                 'userid' => $teststudent->id,
                 'username' => $teststudent->username,
                 'email' => $teststudent->email,
+                'emailoriginal' => "$USER->username@uregina.ca",
                 'datecreated' => userdate($teststudent->timecreated)
             ];
         } else {
             return [
                 'username' => "$USER->username-urstudent",
-                'email' => $email
+                'email' => $email,
+                'emailoriginal' => "$USER->username@uregina.ca"
             ];
         }
     }

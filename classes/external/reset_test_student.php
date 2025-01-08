@@ -27,6 +27,7 @@ namespace theme_urcourses\external;
 use \core_external\external_api;
 use \core_external\external_function_parameters;
 use \core_external\external_value;
+use \core_external\external_single_structure;
 
 require_once($CFG->dirroot . '/theme/urcourses/locallib.php');
 
@@ -38,7 +39,9 @@ class reset_test_student extends external_api {
     }
 
     public static function execute_returns() {
-        return new external_value(PARAM_BOOL);
+        return new external_single_structure([
+            'email' => new external_value(PARAM_TEXT)
+        ]);
     }
 
     public static function execute() {
@@ -53,13 +56,44 @@ class reset_test_student extends external_api {
 
         $email = "$USER->username+urstudent@uregina.ca";
         if ($user = $DB->get_record('user', ['email' => $email])) {
-            if (setnew_password_and_mail($user)) {
-                set_user_preference('auth_forcepasswordchange', 1, $user);
-                return true;
-            }
-            else {
+            $authplugin = get_auth_plugin($user->auth);
+
+            if (!$authplugin->can_change_password()) {
                 throw new \moodle_exception('teststudentcoultnotsetpassword', 'theme_urcourses');
             }
+
+            $password = generate_password();
+            if (!$authplugin->user_update_password($user, $password)) {
+                throw new \moodle_exception('teststudentcoultnotsetpassword', 'theme_urcourses');
+            }
+
+            set_user_preference('auth_forcepasswordchange', 1, $user);
+
+            $supportuser = \core_user::get_support_user();
+            $site = get_site();
+
+            $loginurl = new \moodle_url('/login');
+
+            $a = new \stdClass();
+            $a->firstname   = $user->firstname;
+            $a->lastname    = $user->lastname;
+            $a->sitename    = format_string($site->fullname);
+            $a->username    = $user->username;
+            $a->newpassword = $password;
+            $a->link        = \html_writer::link($loginurl, $loginurl->out());
+            $a->signoff     = generate_email_signoff();
+
+            $message = get_string('resetteststudent_email', 'theme_urcourses', $a);
+            $subject  = format_string(string: $site->fullname) .': '. get_string('resettestuser','theme_urcourses');
+
+            $issent = email_to_user($user, $supportuser, $subject, $message);
+            if (!$issent) {
+                throw new \moodle_exception('teststudentcouldnotemail', 'theme_urcourses');
+            }
+
+            return [
+                'email' => "$USER->username@uregina.ca"
+            ];
         }
     }
 }
