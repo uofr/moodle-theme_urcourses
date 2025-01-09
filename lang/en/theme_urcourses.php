@@ -68,7 +68,6 @@ $string['resetsuccess_title'] = 'Password Reset';
 $string['resetsuccess_body'] = 'Your test student password has been reset. An email will be sent to your <strong>{$a}</strong> account with instructions on how to set a new password for your test student.';
 $string['resetfail_title'] = 'Password Reset Failed';
 $string['resetfail_body'] = 'Test student password reset failed.';
-
 $string['createmodal_title'] = 'Create Test Student Account';
 $string['createmodal_button'] = 'Create';
 $string['createmodal_intro'] = 'The following test user account will be created:';
@@ -82,13 +81,13 @@ $string['createsuccess_title'] = 'Test Student Account Created';
 $string['createsuccess_body'] = 'Information on how to log in to your new test student account will be sent to your <strong>{$a}</strong> account.';
 $string['createfail_title'] = 'Test Student Account Failed';
 $string['createfail_body'] = 'Test student account creation failed.';
-
 $string['enrolurstudent'] = 'Enrol test student account';
 $string['unenrolurstudent'] = 'Unenrol test student account';
 $string['createteststudent'] = 'Create test student';
 $string['modifyteststudent'] = 'Modify test student';
 $string['newtestuser'] = 'New test student account';
 $string['resettestuser'] = 'Test student account password reset.';
+
 $string['newtestaccount_email'] = '<p>Hi {$a->firstname},</p>
 <p>Your new test student account at \'{$a->sitename}\' has been created.</p>
 <p>To log in to your test student account:</p>
@@ -105,6 +104,7 @@ $string['newtestaccount_email'] = '<p>Hi {$a->firstname},</p>
 </ol>
 <p>After you log in, you will have to create a new password for your test student account with at least 6 characters.</p>
 <p>{$a->signoff}</p>';
+
 $string['resetteststudent_email'] = '<p>Hi Admin,</p>
 <p>Your test student account password has been reset.</p>
 <p>To set a new password for your test student account:</p>
@@ -141,10 +141,20 @@ $string['coursesummarymissingtext'] = 'No course summary has been provided at th
 $string['coursesummaryedit'] = 'Edit course summary';
 $string['strtimemonthdayyear'] = '%B %d, %Y';
 
-// Errors.
-
+// Errors
 $string['teststudentnotallowed'] = 'You do not have permission to create a test student.';
 $string['teststudenteditnotallowed'] = 'You do not have permission to edit a test student account.';
 $string['teststudentexists'] = 'You already have a test student account.';
 $string['teststudentcouldnotemail'] = 'Failed to send test student account email.';
 $string['teststudentcoultnotsetpassword'] = 'Could not set new password for test student.';
+
+// Login Form
+$string['maintenance_mode'] = 'UR Courses is in maintenance mode.';
+$string['logincas'] = 'Log in with CAS';
+$string['logincas_subtitle'] = 'I have a uregina username and password';
+$string['loginother'] = 'Log in with other credentials';
+$string['loginhelp_header'] = 'Need help logging in?';
+$string['loginhelp_newstudent'] = 'Are you a new student?';
+$string['loginhelp_forgotpassword'] = 'Forgot your username or password?';
+$string['loginhelp_activate'] = 'Activate your account?';
+$string['login_help'] = 'For further assistance, please contact <a href="mailto:Service.Desk@uregina.ca">Service.Desk@uregina.ca</a> or call <a href="tel:+1-306-585-4685">(306) 585-4685</a>';
