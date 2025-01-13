@@ -26,8 +26,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_urcourses';
 $plugin->release = 'v4.3-r1';
-$plugin->version = 2024121700;
+$plugin->version = 2025011000;
 $plugin->requires = 2023100906; // Requires Moodle 4.3.6 or later.
-$plugin->supported = [403, 403];
+$plugin->supported = [403, 405];
 $plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = ['theme_boost_union' => 2023102042];

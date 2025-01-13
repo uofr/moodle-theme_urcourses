@@ -61,4 +61,18 @@ $functions = [
         'type'          => 'read',
         'ajax'          => 'true',
     ],
+    'theme_urcourses_enrol_test_student' => [
+        'classname'     => 'theme_urcourses\external\enrol_test_student',
+        'methodname'    => 'execute',
+        'description'   => 'self explanatory',
+        'type'          => 'write',
+        'ajax'          => 'true',
+    ],
+    'theme_urcourses_unenrol_test_student' => [
+        'classname'     => 'theme_urcourses\external\unenrol_test_student',
+        'methodname'    => 'execute',
+        'description'   => 'self explanatory',
+        'type'          => 'write',
+        'ajax'          => 'true',
+    ],
 ];

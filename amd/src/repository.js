@@ -49,3 +49,25 @@ export const resetTestStudent = () => {
 
     return Ajax.call([request])[0];
 };
+
+export const enrolTestStudent = (courseid) => {
+    const request = {
+        methodname: 'theme_urcourses_enrol_test_student',
+        args: {
+            courseid: courseid
+        }
+    };
+
+    return Ajax.call([request])[0];
+};
+
+export const unenrolTestStudent = (courseid) => {
+    const request = {
+        methodname: 'theme_urcourses_unenrol_test_student',
+        args: {
+            courseid: courseid
+        }
+    };
+
+    return Ajax.call([request])[0];
+};

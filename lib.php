@@ -159,16 +159,17 @@ function theme_urcourses_extend_navigation_course($navigation, $course, $context
     }
 
     $urstudentemail = $USER->username . '+urstudent@uregina.ca';
-    if (!$urstudent = $DB->get_record('user', ['email' => $urstudentemail])) {
+    if ($urstudent = $DB->get_record('user', ['email' => $urstudentemail])) {
         $urstudentenrolled = is_enrolled($context, $urstudent->id, '', true);
 
-        $nodetext = $urstudentenrolled ? get_string('enrolurstudent', 'theme_urcourses') : get_string('unenrolurstudent', 'theme_urcourses');
+        $nodetext = $urstudentenrolled ? get_string('unenrolurstudent', 'theme_urcourses') : get_string('enrolurstudent', 'theme_urcourses');
         $nodeurl = new moodle_url('');
 
         $node = navigation_node::create(
-            $nodetext,
-            $nodeurl,
-            navigation_node::NODETYPE_LEAF
+            text: $nodetext,
+            action: $nodeurl,
+            type: navigation_node::NODETYPE_LEAF,
+            key: $urstudentenrolled ? 'unenrol_test_student' : 'enrol_test_student'
         );
 
         if ($PAGE->url->compare($nodeurl, URL_MATCH_BASE)) {
@@ -176,6 +177,8 @@ function theme_urcourses_extend_navigation_course($navigation, $course, $context
         }
 
         $navigation->add_node($node);
+
+        $PAGE->requires->js_call_amd('theme_urcourses/enrolteststudent', 'init', [$course->id]);
     }
 }
 

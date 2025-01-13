@@ -87,7 +87,16 @@ $string['createteststudent'] = 'Create test student';
 $string['modifyteststudent'] = 'Modify test student';
 $string['newtestuser'] = 'New test student account';
 $string['resettestuser'] = 'Test student account password reset.';
-
+$string['teststudentenrol_title'] = 'Enrol Test Student?';
+$string['teststudentenrol_body'] = 'Are you sure you want to enrol your test student account in this course?';
+$string['teststudentenrol_button'] = 'Enrol';
+$string['teststudentunenrol_title'] = 'Unenrol Test Student?';
+$string['teststudentunenrol_body'] = 'Are you sure you want to unenrol your test student account from this course?';
+$string['teststudentunenrol_button'] = 'Unenrol';
+$string['teststudentenrolled_title'] = 'Test student enrolled';
+$string['teststudentenrolled_body'] = 'Test student has been enrolled in this course.';
+$string['teststudentunenrolled_title'] = 'Test student unenrolled';
+$string['teststudentunenrolled_body'] = 'Test student has been removed from this course.';
 $string['newtestaccount_email'] = '<p>Hi {$a->firstname},</p>
 <p>Your new test student account at \'{$a->sitename}\' has been created.</p>
 <p>To log in to your test student account:</p>
@@ -122,6 +131,8 @@ $string['resetteststudent_email'] = '<p>Hi Admin,</p>
 <p>After you log in, you will be able to create a new password for your test student account.</p>
 <p>Note that the password must contain at least 6 characters.</p>
 <p>{$a->signoff}</p>';
+
+// Feedback
 $string['feedback_label'] = 'Feedback on UR Courses';
 $string['feedback_modal_header'] = 'Feedback';
 $string['feedback_modal_body'] = 'Give us your feedback on UR Courses.';
@@ -145,8 +156,14 @@ $string['strtimemonthdayyear'] = '%B %d, %Y';
 $string['teststudentnotallowed'] = 'You do not have permission to create a test student.';
 $string['teststudenteditnotallowed'] = 'You do not have permission to edit a test student account.';
 $string['teststudentexists'] = 'You already have a test student account.';
+$string['teststudentnotexist'] = 'You do not have a test student account.';
 $string['teststudentcouldnotemail'] = 'Failed to send test student account email.';
 $string['teststudentcoultnotsetpassword'] = 'Could not set new password for test student.';
+$string['teststudentalreadyenrolled'] = 'Test student is already enrolled in this course.';
+$string['teststudentnotenrolled'] = 'Test student is not enrolled in this course.';
+$string['teststudentcouldnotenrol'] = 'Failed to enrol test student to this course.';
+$string['teststudentcouldnotunenrol'] = 'Failed to unenrol test student to this course.';
+$string['noenrolmethod'] = 'Could not find manual enrolment plugin for this course.';
 
 // Login Form
 $string['maintenance_mode'] = 'UR Courses is in maintenance mode.';
