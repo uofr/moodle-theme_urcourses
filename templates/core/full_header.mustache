@@ -136,3 +136,9 @@
         {{/welcomemessage}}
     </div>
 </header>
+
+{{#js}}
+    require(['theme_urcourses/lightboxes'], function(Lightboxes) {
+        Lightboxes.init();
+    });
+{{/js}}
