@@ -45,6 +45,7 @@ $THEME->scss = function($theme) {
 $THEME->parents = ['boost_union', 'boost'];
 $THEME->extrascsscallback = 'theme_urcourses_get_extra_scss';
 $THEME->prescsscallback = 'theme_urcourses_get_pre_scss';
+$THEME->editor_scss = ['editor'];
 
 // We need to duplicate the rendererfactory even if it is set to the same value as in Boost Union.
 // The theme_config::get_renderer() method needs it to be directly in the theme_config object.

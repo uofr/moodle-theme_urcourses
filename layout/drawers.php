@@ -49,9 +49,17 @@ if (!is_null($setdarkmode)) {
     }
 }
 
-if (theme_urcourses_darkmode_enabled()) {
-    $PAGE->requires->css('/theme/urcourses/style/darkmode.css');
+$darkmodeenabled = theme_urcourses_darkmode_enabled();
+if ($darkmodeenabled) {
+    $PAGE->requires->css('/theme/urcourses/style/darkmode.css?v=2024090200');
 }
+
+// Extra css.
+$PAGE->requires->css('/theme/urcourses/style/legacy.css?v=2024090200');
+$PAGE->requires->css('/theme/urcourses/style/callout.css?v=2024090200');
+$PAGE->requires->css('/theme/urcourses/style/alert.css?v=2024090200');
+$PAGE->requires->css('/theme/urcourses/style/pullquote.css?v=2024090200');
+$PAGE->requires->css('/theme/urcoursesstyle/c4l.css?v=2024090200');
 
 // Add block button in editing mode.
 $addblockbutton = $OUTPUT->addblockbutton();
@@ -141,6 +149,10 @@ require_once($CFG->dirroot . '/theme/boost_union/layout/includes/courseindex.php
 $buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_actions() && !$PAGE->has_secondary_navigation();
 // If the settings menu will be included in the header then don't add it here.
 $regionmainsettingsmenu = $buildregionmainsettings ? $OUTPUT->region_main_settings_menu() : false;
+
+if ($darkmodeenabled) {
+    $extraclasses[] = 'ur-dark-mode';
+}
 
 $bodyattributes = $OUTPUT->body_attributes($extraclasses); // In the original layout file, this line is place more above,
                                                            // but we amended $extraclasses and had to move it.
