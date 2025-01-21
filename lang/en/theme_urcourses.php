@@ -175,3 +175,6 @@ $string['loginhelp_newstudent'] = 'Are you a new student?';
 $string['loginhelp_forgotpassword'] = 'Forgot your username or password?';
 $string['loginhelp_activate'] = 'Activate your account?';
 $string['login_help'] = 'For further assistance, please contact <a href="mailto:Service.Desk@uregina.ca">Service.Desk@uregina.ca</a> or call <a href="tel:+1-306-585-4685">(306) 585-4685</a>';
+
+// Course Header
+$string['instructorpicture_alt'] = 'Profile picture of {$a}';
