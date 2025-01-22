@@ -91,79 +91,160 @@ class core_renderer extends \theme_boost_union\output\core_renderer {
         return $this->render_from_template('core/loginform', $context);
     }
 
-    /**
-     * Wrapper for header elements.
+        /**
+     * Renders the context header for the page.
      *
-     * This renderer function is copied and modified from /lib/classes/output/core_renderer.php
-     *
-     * @return string HTML to display the main header.
+     * @param array $headerinfo Heading information.
+     * @param int $headinglevel What 'h' level to make the heading.
+     * @return string A rendered context header.
      */
-    public function full_header() {
-        $pagetype = $this->page->pagetype;
-        $homepage = get_home_page();
-        $homepagetype = null;
-        // Add a special case since /my/courses is a part of the /my subsystem.
-        if ($homepage == HOMEPAGE_MY || $homepage == HOMEPAGE_MYCOURSES) {
-            $homepagetype = 'my-index';
-        } else if ($homepage == HOMEPAGE_SITE) {
-            $homepagetype = 'site-index';
-        }
-        if (
-            $this->page->include_region_main_settings_in_header_actions() &&
-                !$this->page->blocks->is_block_present('settings')
-        ) {
-            // Only include the region main settings if the page has requested it and it doesn't already have
-            // the settings block on it. The region main settings are included in the settings block and
-            // duplicating the content causes behat failures.
-            $this->page->add_header_action(\html_writer::div(
-                $this->region_main_settings_menu(),
-                'd-print-none',
-                ['id' => 'region-main-settings-menu']
-            ));
+    public function context_header($headerinfo = null, $headinglevel = 1): string {
+        global $COURSE, $DB, $USER, $CFG;
+        require_once($CFG->dirroot . '/user/lib.php');
+        $context = $this->page->context;
+        $heading = null;
+        $imagedata = null;
+        $userbuttons = null;
+
+        // Make sure to use the heading if it has been set.
+        if (isset($headerinfo['heading'])) {
+            $heading = $headerinfo['heading'];
+        } else {
+            $heading = $this->page->heading;
         }
 
-        $header = new \stdClass();
-        $header->settingsmenu = $this->context_header_settings_menu();
-        $header->contextheader = $this->context_header();
-        $header->hasnavbar = empty($this->page->layout_options['nonavbar']);
-        $header->navbar = $this->navbar();
-        $header->pageheadingbutton = $this->page_heading_button();
-        $header->courseheader = $this->course_header();
-        $header->instructors = $this->get_instructors($this->page->course->id);
-        $header->headeractions = $this->page->get_header_actions();
+        // The user context currently has images and buttons. Other contexts may follow.
+        if ((isset($headerinfo['user']) || $context->contextlevel == CONTEXT_USER) && $this->page->pagetype !== 'my-index') {
+            if (isset($headerinfo['user'])) {
+                $user = $headerinfo['user'];
+            } else {
+                // Look up the user information if it is not supplied.
+                $user = $DB->get_record('user', array('id' => $context->instanceid));
+            }
 
-        // Add the course header image for rendering.
-        if ($this->page->pagelayout == 'course' && (get_config('theme_boost_union', 'courseheaderimageenabled')
-                        == THEME_BOOST_UNION_SETTING_SELECT_YES)) {
-            // If course header images are activated, we get the course header image url
-            // (which might be the fallback image depending on the course settings and theme settings).
-            $header->courseheaderimageurl = theme_boost_union_get_course_header_image_url();
-            // Additionally, get the course header image height.
-            $header->courseheaderimageheight = get_config('theme_boost_union', 'courseheaderimageheight');
-            // Additionally, get the course header image position.
-            $header->courseheaderimageposition = get_config('theme_boost_union', 'courseheaderimageposition');
-            // Additionally, get the template context attributes for the course header image layout.
-            $courseheaderimagelayout = get_config('theme_boost_union', 'courseheaderimagelayout');
-            switch($courseheaderimagelayout) {
-                case THEME_BOOST_UNION_SETTING_COURSEIMAGELAYOUT_HEADINGABOVE:
-                    $header->courseheaderimagelayoutheadingabove = true;
-                    $header->courseheaderimagelayoutstackedclass = '';
-                    break;
-                case THEME_BOOST_UNION_SETTING_COURSEIMAGELAYOUT_STACKEDDARK:
-                    $header->courseheaderimagelayoutheadingabove = false;
-                    $header->courseheaderimagelayoutstackedclass = 'dark';
-                    break;
-                case THEME_BOOST_UNION_SETTING_COURSEIMAGELAYOUT_STACKEDLIGHT:
-                    $header->courseheaderimagelayoutheadingabove = false;
-                    $header->courseheaderimagelayoutstackedclass = 'light';
-                    break;
+            // If the user context is set, then use that for capability checks.
+            if (isset($headerinfo['usercontext'])) {
+                $context = $headerinfo['usercontext'];
+            }
+
+            // Only provide user information if the user is the current user, or a user which the current user can view.
+            // When checking user_can_view_profile(), either:
+            // If the page context is course, check the course context (from the page object) or;
+            // If page context is NOT course, then check across all courses.
+            $course = ($this->page->context->contextlevel == CONTEXT_COURSE) ? $this->page->course : null;
+
+            if (user_can_view_profile($user, $course)) {
+                // Use the user's full name if the heading isn't set.
+                if (empty($heading)) {
+                    $heading = fullname($user);
+                }
+
+                $imagedata = $this->user_picture($user, array('size' => 100));
+
+                // Check to see if we should be displaying a message button.
+                if (!empty($CFG->messaging) && has_capability('moodle/site:sendmessage', $context)) {
+                    $userbuttons = array(
+                        'messages' => array(
+                            'buttontype' => 'message',
+                            'title' => get_string('message', 'message'),
+                            'url' => new moodle_url('/message/index.php', array('id' => $user->id)),
+                            'image' => 't/message',
+                            'linkattributes' => \core_message\helper::messageuser_link_params($user->id),
+                            'page' => $this->page
+                        )
+                    );
+
+                    if ($USER->id != $user->id) {
+                        $iscontact = \core_message\api::is_contact($USER->id, $user->id);
+                        $isrequested = \core_message\api::get_contact_requests_between_users($USER->id, $user->id);
+                        $contacturlaction = '';
+                        $linkattributes = \core_message\helper::togglecontact_link_params(
+                            $user,
+                            $iscontact,
+                            true,
+                            !empty($isrequested),
+                        );
+                        // If the user is not a contact.
+                        if (!$iscontact) {
+                            if ($isrequested) {
+                                // We just need the first request.
+                                $requests = array_shift($isrequested);
+                                if ($requests->userid == $USER->id) {
+                                    // If the user has requested to be a contact.
+                                    $contacttitle = 'contactrequestsent';
+                                } else {
+                                    // If the user has been requested to be a contact.
+                                    $contacttitle = 'waitingforcontactaccept';
+                                }
+                                $linkattributes = array_merge($linkattributes, [
+                                    'class' => 'disabled',
+                                    'tabindex' => '-1',
+                                ]);
+                            } else {
+                                // If the user is not a contact and has not requested to be a contact.
+                                $contacttitle = 'addtoyourcontacts';
+                                $contacturlaction = 'addcontact';
+                            }
+                            $contactimage = 't/addcontact';
+                        } else {
+                            // If the user is a contact.
+                            $contacttitle = 'removefromyourcontacts';
+                            $contacturlaction = 'removecontact';
+                            $contactimage = 't/removecontact';
+                        }
+                        $userbuttons['togglecontact'] = array(
+                                'buttontype' => 'togglecontact',
+                                'title' => get_string($contacttitle, 'message'),
+                                'url' => new moodle_url('/message/index.php', array(
+                                        'user1' => $USER->id,
+                                        'user2' => $user->id,
+                                        $contacturlaction => $user->id,
+                                        'sesskey' => sesskey())
+                                ),
+                                'image' => $contactimage,
+                                'linkattributes' => $linkattributes,
+                                'page' => $this->page
+                            );
+                    }
+
+                    $this->page->requires->string_for_js('changesmadereallygoaway', 'moodle');
+                }
+            } else {
+                $heading = null;
             }
         }
 
-        if (!empty($pagetype) && !empty($homepagetype) && $pagetype == $homepagetype) {
-            $header->welcomemessage = \core\user::welcome_message();
+        $prefix = null;
+        if ($context->contextlevel == CONTEXT_MODULE) {
+            if ($this->page->course->format === 'singleactivity') {
+                $heading = format_string($this->page->course->fullname, true, ['context' => $context]);
+            } else {
+                $heading = $this->page->cm->get_formatted_name();
+                $iconurl = $this->page->cm->get_icon_url();
+                $iconclass = $iconurl->get_param('filtericon') ? '' : 'nofilter';
+                $iconattrs = [
+                    'class' => "icon activityicon $iconclass",
+                    'aria-hidden' => 'true'
+                ];
+                $imagedata = \html_writer::img($iconurl->out(false), '', $iconattrs);
+                $purposeclass = plugin_supports('mod', $this->page->activityname, FEATURE_MOD_PURPOSE);
+                $purposeclass .= ' activityiconcontainer icon-size-6';
+                $purposeclass .= ' modicon_' . $this->page->activityname;
+                $isbranded = component_callback('mod_' . $this->page->activityname, 'is_branded', [], false);
+                $imagedata = \html_writer::tag('div', $imagedata, ['class' => $purposeclass . ($isbranded ? ' isbranded' : '')]);
+                if (!empty($USER->editing)) {
+                    $prefix = get_string('modulename', $this->page->activityname);
+                }
+            }
         }
-        return $this->render_from_template('core/full_header', $header);
+
+        $instructors = [];
+        if ($context->contextlevel == CONTEXT_COURSE) {
+            $instructors = $this->get_instructors($COURSE->id);
+        }
+
+        $contextheader = new \theme_urcourses\output\context_header($heading, $headinglevel, $imagedata, $userbuttons, $prefix, $instructors);
+        return $this->render($contextheader);
     }
 
     private function get_instructors($courseid) {
