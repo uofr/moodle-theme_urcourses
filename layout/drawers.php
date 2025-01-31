@@ -51,7 +51,7 @@ if (!is_null($setdarkmode)) {
 
 $darkmodeenabled = theme_urcourses_darkmode_enabled();
 if ($darkmodeenabled) {
-    $PAGE->requires->css('/theme/urcourses/style/darkmode.css?v=2024090200');
+    $PAGE->requires->css('/theme/urcourses/style/darkmode.css?v=2025012700');
 }
 
 // Extra css.
@@ -183,7 +183,7 @@ $templatecontext = [
 ];
 
 // Include the template content for the course related hints.
-require_once($CFG->dirroot . '/theme/boost_union/layout/includes/courserelatedhints.php');
+require_once(__DIR__ . '/includes/courserelatedhints.php');
 
 // Include the template content for the block regions.
 require_once($CFG->dirroot . '/theme/boost_union/layout/includes/blockregions.php');

@@ -120,3 +120,55 @@ function theme_urcourses_add_custom_user_menu_items($usermenuitems, $customitems
         array_slice($usermenuitems, $insertpoint, $itemcount)
     );
 }
+
+function theme_urcourses_get_course_related_hints() {
+    global $COURSE, $DB, $OUTPUT, $PAGE;
+
+    if (!$PAGE->context->contextlevel == CONTEXT_COURSE) {
+        return '';
+    }
+
+    $course = get_course($COURSE->id);
+    if (empty($course->idnumber)) {
+        return '';
+    }
+
+    $enrolments = $DB->get_records_sql("SELECT * FROM ur_crn_map WHERE courseid = '$course->idnumber' ORDER BY semester DESC");
+    $coursehint_enrol = new \theme_urcourses\output\coursehint_enrol($enrolments, );
+
+    return $OUTPUT->render($coursehint_enrol);
+}
+
+// 01 - 04: 10 (Winter)
+// 05 - 08: 20 (Spring/Summer)
+// 09 - 12: 30 (Fall)
+function theme_urcourses_get_current_semester() {
+    $now = \core\di::get(\core\clock::class)->now();
+    $month = $now->format('m');
+    $year = $now->format('Y');
+
+    if ($month >= 1 && $month <= 4) {
+        $semester = 10;
+    } else if ($month >= 5 && $month <= 8) {
+        $semester = 20;
+    } else if ($month >= 9 && $month <= 12) {
+        $semester = 30;
+    }
+
+    return "$year$semester";
+}
+
+function theme_urcourses_get_semester_string($semestercode) {
+    $year = substr($semestercode, 0, 4);
+    $semester = substr($semestercode, -2);
+    switch ($semester) {
+        case '10':
+            return $year . ' ' . get_string('winter', 'theme_urcourses');
+        case '20':
+            return $year . ' ' . get_string('springsummer', 'theme_urcourses');
+        case '30':
+            return $year . ' ' . get_string('fall', 'theme_urcourses');
+        default:
+            return '';
+    }
+}
