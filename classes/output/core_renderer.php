@@ -30,6 +30,16 @@ use moodle_url;
  * @package    theme_urcourses
  */
 class core_renderer extends \theme_boost_union\output\core_renderer {
+    public function get_compact_logo_url($maxwidth = 100, $maxheight = 100) {
+        global $OUTPUT;
+        return $OUTPUT->image_url('logo', 'theme_urcourses_default');
+    }
+
+    public function get_compact_logosmall_url($maxwidth = 100, $maxheight = 100) {
+        global $OUTPUT;
+        return $OUTPUT->image_url('logo', 'theme_urcourses_default');
+    }
+
     /**
      * Renders the login form.
      *
@@ -91,7 +101,7 @@ class core_renderer extends \theme_boost_union\output\core_renderer {
         return $this->render_from_template('core/loginform', $context);
     }
 
-        /**
+    /**
      * Renders the context header for the page.
      *
      * @param array $headerinfo Heading information.
@@ -280,4 +290,9 @@ class core_renderer extends \theme_boost_union\output\core_renderer {
 
         return $instructors;
     }
+
+    public function render_coursehint_enrol(\theme_urcourses\output\coursehint_enrol $coursehint_enrol) {
+        $data = $coursehint_enrol->export_for_template($this);
+        return $this->render_from_template('theme_urcourses/course-hint-enrol', $data);
+    } 
 }
