@@ -178,3 +178,10 @@ $string['login_help'] = 'For further assistance, please contact <a href="mailto:
 
 // Course Header
 $string['instructorpicture_alt'] = 'Profile picture of {$a}';
+
+// Enrolment Course Hint
+$string['winter'] = 'Winter';
+$string['springsummer'] = 'Spring/Summer';
+$string['fall'] = 'Fall';
+$string['hasenrolment'] = 'This course has enrolment {$a}.';
+$string['noenrolment'] = 'This course does not have enrolment.';
